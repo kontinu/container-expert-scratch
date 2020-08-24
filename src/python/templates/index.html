@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+    <style>
+        body{
+            font-family: "Exo", sans-serif;
+        }
+    </style>
+    <head>
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+            <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Exo&amp;display=swap'>
+            <link rel="stylesheet" href="static/style.css">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+
+   <body>
+        <div class="container">
+            <img class="img center resize" src="static/logo.png" >
+            <br>
+
+            <h1> {{greeting}} </h1>
+            <h2> Version: v3</h2>
+            <br>
+
+                <h3>Visits:   {{ visit_counts }} </h3>
+
+                <h3>Hostname:  {{hostname}}</h3>
+
+                <h3>Task: {{DOCKER_SERVICE_NAME}}</h3>
+
+                <h3>FOO: {{FOO}}</h3>
+              {% if  redis_host %}
+                <h3>Redis: {{redis_host}}</h3>
+              {% endif %}
+
+            <br>
+            <h4><a href="https://linktr.ee/kontinu">kontinu</a></h2>
+      </div>
+      <br>
+
+
+   </body>

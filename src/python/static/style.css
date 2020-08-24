@@ -1,0 +1,65 @@
+body {
+	margin: 0;
+	width: 100%;
+	height: 100vh;
+	font-family: "Exo", sans-serif;
+	color: #fff;
+	background: linear-gradient(-45deg, #202fff, #681481, #a51280, #2e3131 );
+	background-size: 400% 400%;
+	-webkit-animation: gradientBG 15s ease infinite;
+	        animation: gradientBG 15s ease infinite;
+}
+.container {
+	width: 100%;
+	position: relative;
+	top: 15%;
+	text-align: center;
+}
+
+img.resize {
+    max-width: 25%;
+    max-height: 25%;
+}
+
+h1 {
+	font-weight: 1500;
+}
+h2 {
+    font-weight: 950;
+}
+h2 {
+    font-weight: 700;
+}
+
+h4 {
+  color: aquamarine;
+}
+a {
+	text-decoration: none;
+	color: aquamarine;
+}
+
+@-webkit-keyframes gradientBG {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+@keyframes gradientBG {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+
