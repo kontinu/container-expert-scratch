@@ -2,6 +2,7 @@
 
 - [Container Expert Source](#container-expert-source)
 - [Detalles](#detalles)
+- [VS Code](#vs-code)
 
 <!-- /TOC -->
 
@@ -41,3 +42,12 @@ Cada app viene acompanado de exactamente lo mismo y se comportaran de la misma m
 
 
 ---
+# VS Code
+
+mi VS Code tiene los siguientes add-onds (plugins):
+
+- better comments - Aaron Bond
+- Docker - microsoft
+- Kubernetes - microsoft
+- [THEME]: Andromeda Italic Border
+- [File Icons Themes]: VSCode Icons
