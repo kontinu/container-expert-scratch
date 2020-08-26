@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 #? bash para recibir params
 # $@ = todos los params
 # $1 , $2 ...  1o y 2o param

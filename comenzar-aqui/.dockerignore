@@ -1,0 +1,5 @@
+*.tar.gz
+*.exe
+*.zip
+.DS_STORE
+README.md
