@@ -3,6 +3,7 @@
 const express = require('express');
 const request = require('request')
 const fetch = require('node-fetch')
+const os = require('os');
 // Constants
 const PORT = 8080;
 const HOST = '0.0.0.0';
@@ -21,7 +22,7 @@ require("./extras/health")(app)
 
 var MSG=process.env.MSG || " 📦 Container ";
 
-const hostname=process.env.HOSTNAME || "";
+const hostname=os.hostname()
 
 
 
@@ -34,6 +35,8 @@ app.get('/api',  async function(req, res, next) {
 		)
 		const yeison = await resp.json();
 		res.json({"msg": `${MSG+yeison.msg}`, "hostname":`${hostname}`} )
+	}else{
+		res.json({"msg": `${MSG}`, "hostname":`${hostname}`} )
 	}
 	res.end
 })
