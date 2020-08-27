@@ -1,0 +1,39 @@
+services:
+  go:
+    build:
+      context: /Users/marcoscano/kontinu/github/container-expert/scratch/src/go
+    deploy:
+      replicas: 5
+    image: kontinu/go-expert:v1.0
+    ports:
+    - published: 8082
+      target: 8080
+  nodejs:
+    build:
+      context: /Users/marcoscano/kontinu/github/container-expert/scratch/src/nodejs
+    deploy:
+      replicas: 2
+    image: kontinu/nodejs-expert:v1.1
+    ports:
+    - published: 8081
+      target: 8080
+  python:
+    build:
+      context: /Users/marcoscano/kontinu/github/container-expert/scratch/src/python
+    deploy:
+      replicas: 3
+    environment:
+      FOO: cambiemoslaVariable
+      REDIS_HOST: redis
+    image: kontinu/foo:bar
+    ports:
+    - published: 8080
+      target: 8080
+  redis:
+    deploy:
+      replicas: 1
+    image: redis:alpine
+version: '3.7'
+volumes:
+  mivolumen: {}
+

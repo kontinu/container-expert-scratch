@@ -1,0 +1,4 @@
+DOCKER_REPO: kontinu
+FOO: cambiemoslaVariable
+MY_DOMAIN: kontinu.local
+PROJECT_LANG: python

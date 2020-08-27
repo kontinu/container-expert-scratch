@@ -1,0 +1,83 @@
+version: "3.7"
+
+services:
+  traefik:
+    image: "traefik:v2.1"
+    container_name: "traefik"
+    hostname: "traefik"
+    environment:
+      TRAEFIK_LOG_LEVEL: INFO
+      TRAEFIK_API_DASHBOARD: "true"
+      TRAEFIK_API_INSECURE: "true"
+      TRAEFIK_ENTRYPOINTS_WEB: "true"
+      TRAEFIK_ENTRYPOINTS_WEB_ADDRESS: ":80"
+      TRAEFIK_PROVIDERS_DOCKER: "true"
+
+      TRAEFIK_PROVIDERS_DOCKER_EXPOSEDBYDEFAULT: "false"
+      TRAEFIK_PROVIDERS_DOCKER_SWARMMODE: "false"
+
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  menu:
+    build:
+      context: src/nginx
+    image: ${DOCKER_REPO:-kontinu}/nginx-menu:v1.0
+
+    container_name: menu
+    hostname: menu
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.menu.entrypoints=web"
+      - "traefik.http.routers.menu.rule=Host(`menu.$MY_DOMAIN`)"
+      - traefik.http.services.menu.loadbalancer.server.port=80
+
+#? -----------------------------
+  front:
+    image: ${DOCKER_REPO:-kontinu}/python-expert:v1.0
+    init: true
+    environment:
+      NEXT_URL: "http://middle:8080/api"
+      REDIS_HOST: "redis"
+    build:
+      context: src/python
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.front.entrypoints=web"
+      - "traefik.http.routers.front.rule=Host(`front.$MY_DOMAIN`)"
+      - traefik.http.services.front.loadbalancer.server.port=8080
+
+  middle:
+    image: ${DOCKER_REPO:-kontinu}/nodejs-expert:v1.0
+    init: true
+    environment:
+      NEXT_URL: "http://back:8080/api"
+    build:
+      context: src/nodejs
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.middle.entrypoints=web"
+      - "traefik.http.routers.middle.rule=Host(`middle.$MY_DOMAIN`)"
+      - traefik.http.services.middle.loadbalancer.server.port=8080
+
+
+  back:
+    image: ${DOCKER_REPO:-kontinu}/go-expert:v1.0
+    build:
+      context: src/go
+    init: true
+    restart: on-failure
+
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.back.entrypoints=web"
+      - "traefik.http.routers.back.rule=Host(`back.$MY_DOMAIN`)"
+      - traefik.http.services.back.loadbalancer.server.port=8080
+
+
+  redis:
+    image: "redis:alpine"
+

@@ -6,8 +6,11 @@ def get_next_msg():
     import requests
     next_msg=""
     if os.getenv("NEXT_URL"):
-        r=requests.get(os.getenv("NEXT_URL"))
-        next_msg=r.json()["msg"]
+        try:
+            r=requests.get(os.getenv("NEXT_URL"))
+            next_msg=r.json()["msg"]
+        except:
+            pass
     return " "+next_msg + " "
 
 @app.route('/api')

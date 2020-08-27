@@ -36,11 +36,11 @@ def root():
     #print(f"Getting visits! {count}")
     global kontinu_msg
     try:
-        kontinu_msg=kontinu_msg+extras.kontinu.get_next_msg()
+        the_msg=kontinu_msg+extras.kontinu.get_next_msg()
     except:
         pass
 
-    return render_template('index.html',visit_counts=count, hostname=host, DOCKER_SERVICE_NAME=DOCKER_SERVICE_NAME, FOO=foo , redis_host=REDIS_HOST, greeting=kontinu_msg)
+    return render_template('index.html',visit_counts=count, hostname=host, DOCKER_SERVICE_NAME=DOCKER_SERVICE_NAME, FOO=foo , redis_host=REDIS_HOST, greeting=the_msg)
 
 
 

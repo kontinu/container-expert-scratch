@@ -3,11 +3,18 @@ version: "3.7"
 volumes:
   mivolumen:
 
+
 services:
   python:
-    image: ${DOCKER_REPO:-kontinu}/container-expert-go:latest
+    image: ${DOCKER_REPO:-kontinu}/foo:bar
+
+    environment:
+      - REDIS_HOST=redis
+      - FOO=${FOO}
     build:
       context: src/python
+    deploy:
+      replicas: 3
     ports:
       - 8080:8080
 
@@ -15,6 +22,8 @@ services:
     image: ${DOCKER_REPO:-kontinu}/nodejs-expert:v1.1
     build:
       context: src/nodejs
+    deploy:
+      replicas: 2
     ports:
       - 8081:8080
 
@@ -22,7 +31,13 @@ services:
     image: ${DOCKER_REPO:-kontinu}/go-expert:v1.0
     build:
       context: src/go
+    deploy:
+      replicas: 5
     ports:
       - 8082:8080
 
+  redis:
+    image: redis:alpine
+    deploy:
+      replicas: 1
 

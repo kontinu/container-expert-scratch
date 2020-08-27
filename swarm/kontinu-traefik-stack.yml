@@ -1,0 +1,37 @@
+
+version: "3.7"
+
+networks:
+  proxy:
+    driver: overlay
+    name: proxy
+
+services:
+
+  traefik:
+    image: traefik:latest
+    networks:
+    - proxy
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: >
+      --providers.docker
+      --providers.docker.exposedbydefault=false
+      --providers.docker.swarmmode=true
+      --entryPoints.http.address=":80"
+      --entryPoints.https.address=":443"
+      --accesslog
+      --log.level=INFO
+      --api=true
+      --api.insecure=true
+      --api.dashboard=true
+      --providers.docker.network=proxy

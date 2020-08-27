@@ -1,0 +1,193 @@
+##? all in one stack
+#* - traefik
+#* - visualizer
+#* - menu
+#* - all our apps
+
+version: "3.7"
+
+networks:
+  ## needed for traefik
+  net: {}
+  proxy:
+    driver: overlay
+    name: proxy
+
+x-base-service:
+  &base_service
+  networks:
+    - proxy
+  # ? adds self-healing availability
+  healthcheck:
+    test: wget -O- http://localhost:8080/health
+    interval: 30s
+    timeout: 10s
+    retries: 3
+    start_period: 5s
+  #* ignorado en docker-compose
+  deploy:
+    replicas: ${DEPLOYMENT_REPLICAS:-3}
+    restart_policy:
+      # restart under any condition
+      condition: any
+    update_config:
+      # update one task at a time
+      parallelism: 1
+      # update after 10s passed and task ainer is healthy
+      delay: 10s
+      # spin up a new container first
+      order: start-first
+    resources:
+      # hard limits
+      limits:
+        # 50% of CPU time
+        cpus: '0.50'
+        # up to 200 MB
+        memory: 200M
+        # cgroups
+      # at least reserve this resources
+      reservations:
+        cpus: '0.25'
+        memory: 50M
+
+
+services:
+  traefik:
+    image: traefik:latest
+    networks:
+    - proxy
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    deploy:
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: >
+      --providers.docker
+      --providers.docker.exposedbydefault=false
+      --providers.docker.swarmmode=true
+      --entryPoints.http.address=":80"
+      --entryPoints.https.address=":443"
+      --accesslog
+      --log.level=INFO
+      --api=true
+      --api.insecure=true
+      --api.dashboard=true
+      --providers.docker.network=proxy
+
+  viz:
+    image:  dockersamples/visualizer
+    networks:
+      - proxy
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      labels:
+        - traefik.enable=true
+        - "traefik.docker.network=proxy"
+        - traefik.http.services.viz.loadbalancer.server.port=8080
+
+        - traefik.http.routers.viz_http.rule=Host(`viz.kontinu.local`)
+        - traefik.http.routers.viz_http.service=viz
+        - traefik.http.routers.viz_http.entrypoints=http
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  menu:
+    build:
+      context: src/nginx
+    image: ${DOCKER_REPO:-kontinu}/nginx-menu:v1.0
+    networks:
+      - proxy
+    hostname: menu
+    deploy:
+      labels:
+        - traefik.enable=true
+        - "traefik.docker.network=proxy"
+        - traefik.http.services.menu.loadbalancer.server.port=80
+        - traefik.http.routers.menu_http.rule=Host(`menu.kontinu.local`)
+        - traefik.http.routers.menu_http.service=menu
+        - traefik.http.routers.menu_http.entrypoints=http
+
+
+
+  front:
+    <<: *base_service
+    build:
+      context: src/python
+    image: ${DOCKER_REPO:-kontinu}/python-expert:v1.0
+    init: true
+    environment:
+      NEXT_URL: "http://middle:8080/api"
+      REDIS_HOST: redis
+      DOCKER_SERVICE_NAME: "{{.Service.Name}}.{{.Task.Slot}}"
+      FOO: ${FOO:-BAR}
+    networks:
+      - proxy
+    build:
+      context: src/python
+    deploy:
+      labels:
+        - traefik.enable=true
+        - "traefik.docker.network=proxy"
+        - traefik.http.services.front.loadbalancer.server.port=8080
+
+        - traefik.http.routers.front_http.rule=Host(`front.kontinu.local`)
+        - traefik.http.routers.front_http.service=front
+        - traefik.http.routers.front_http.entrypoints=http
+
+  middle:
+    <<: *base_service
+    build:
+      context: src/nodejs
+    image: ${DOCKER_REPO:-kontinu}/nodejs-expert:v1.0
+    init: true
+    environment:
+      NEXT_URL: "http://back:8080/api"
+    build:
+      context: src/nodejs
+    deploy:
+      labels:
+        - traefik.enable=true
+        - "traefik.docker.network=proxy"
+        - traefik.http.services.middle.loadbalancer.server.port=8080
+        - traefik.http.routers.middle_http.rule=Host(`middle.kontinu.local`)
+        - traefik.http.routers.middle_http.service=middle
+        - traefik.http.routers.middle_http.entrypoints=http
+
+
+
+
+
+  back:
+    <<: *base_service
+    build:
+      context: src/go
+    image: ${DOCKER_REPO:-kontinu}/go-expert:v1.0
+    build:
+      context: src/go
+    init: true
+    restart: on-failure
+    deploy:
+      labels:
+        - traefik.enable=true
+        - "traefik.docker.network=proxy"
+        - traefik.http.services.back.loadbalancer.server.port=8080
+        - traefik.http.routers.back_http.rule=Host(`back.kontinu.local`)
+        - traefik.http.routers.back_http.service=back
+        - traefik.http.routers.back_http.entrypoints=http
+
+
+  redis:
+    image: "redis:alpine"
+    deploy:
+      replicas: 1
+    networks:
+      proxy:

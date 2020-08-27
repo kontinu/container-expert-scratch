@@ -1,0 +1,42 @@
+version: '3.7'
+
+x-default-opts:
+  &default-opts
+  logging:
+    options:
+      max-size: "1m"
+  # driver: "gelf"
+  # options:
+  #   gelf-address: "udp://127.0.0.1:5000"
+
+
+networks:
+  net: {}
+  proxy:
+    external: true
+
+
+services:
+
+  viz:
+    <<: *default-opts
+    image:  dockersamples/visualizer
+    networks:
+      - proxy
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      labels:
+        - traefik.enable=true
+        - "traefik.docker.network=proxy"
+        - traefik.http.services.viz.loadbalancer.server.port=8080
+
+        - traefik.http.routers.viz_http.rule=Host(`viz.kontinu.local`)
+        - traefik.http.routers.viz_http.service=viz
+        - traefik.http.routers.viz_http.entrypoints=http
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    # ports:
+    #   - 4040:8080
