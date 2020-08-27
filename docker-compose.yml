@@ -1,0 +1,28 @@
+version: "3.7"
+
+volumes:
+  mivolumen:
+
+services:
+  python:
+    image: ${DOCKER_REPO:-kontinu}/container-expert-go:latest
+    build:
+      context: src/python
+    ports:
+      - 8080:8080
+
+  nodejs:
+    image: ${DOCKER_REPO:-kontinu}/nodejs-expert:v1.1
+    build:
+      context: src/nodejs
+    ports:
+      - 8081:8080
+
+  go:
+    image: ${DOCKER_REPO:-kontinu}/go-expert:v1.0
+    build:
+      context: src/go
+    ports:
+      - 8082:8080
+
+
