@@ -7,7 +7,6 @@ volumes:
 services:
   python:
     image: ${DOCKER_REPO:-kontinu}/foo:bar
-
     environment:
       - REDIS_HOST=redis
       - FOO=${FOO}
@@ -17,6 +16,7 @@ services:
       replicas: 3
     ports:
       - 8080:8080
+
 
   nodejs:
     image: ${DOCKER_REPO:-kontinu}/nodejs-expert:v1.1
