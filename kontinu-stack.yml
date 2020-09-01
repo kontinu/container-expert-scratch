@@ -188,13 +188,6 @@ services:
     networks:
       proxy:
 
-  mysql-db:
-    image: mysql:8.0
-    environment:
-      - MYSQL_ROOT_PASSWORD=my-secret-pw
-    deploy:
-      mode: global
-    volumes:
-    - /my/own/datadir:/var/lib/mysql
 
-#docker run --name some-mysql -v /my/own/datadir:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=my-secret-pw -d mysql:tag
+
+
