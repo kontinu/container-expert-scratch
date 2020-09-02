@@ -1,0 +1,17 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  kontinu-app
+  annotations:
+    description: "mi servicio"
+
+spec:
+  selector:
+    app: kontinu-app
+  type:  LoadBalancer
+  ports:
+  - name:  http
+    port:  80
+    targetPort:  http
+...
