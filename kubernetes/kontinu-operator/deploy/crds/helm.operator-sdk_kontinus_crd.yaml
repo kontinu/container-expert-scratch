@@ -1,0 +1,22 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: kontinus.helm.operator-sdk
+spec:
+  group: helm.operator-sdk
+  names:
+    kind: Kontinu
+    listKind: KontinuList
+    plural: kontinus
+    singular: kontinu
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        type: object
+        x-kubernetes-preserve-unknown-fields: true
+    served: true
+    storage: true
+    subresources:
+      status: {}

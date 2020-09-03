@@ -35,6 +35,7 @@ def root():
         DOCKER_SERVICE_NAME="N/A"
     #print(f"Getting visits! {count}")
     global kontinu_msg
+    the_msg=""
     try:
         the_msg=kontinu_msg+extras.kontinu.get_next_msg()
     except:

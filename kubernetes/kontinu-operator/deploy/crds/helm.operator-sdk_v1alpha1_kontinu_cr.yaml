@@ -1,0 +1,50 @@
+apiVersion: helm.operator-sdk/v1alpha1
+kind: Kontinu
+metadata:
+  name: kontinu-1
+spec:
+  # Default values copied from <project_dir>/helm-charts/kontinu-chart/values.yaml
+
+  affinity: {}
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  fullnameOverride: ""
+  image:
+    pullPolicy: IfNotPresent
+    repository: kontinu/python-expert
+    tag: v1.0
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  redis:
+    cluster:
+      enabled: true
+      slaveCount: 1
+    fullnameOverride: redis
+    sentinel:
+      enabled: true
+      usePassword: false
+  replicaCount: 1
+  resources: {}
+  securityContext: {}
+  service:
+    port: 9090
+    type: LoadBalancer
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: ""
+  tolerations: []
+

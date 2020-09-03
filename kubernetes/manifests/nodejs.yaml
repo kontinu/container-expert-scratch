@@ -2,9 +2,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: kontinu-app
+  name: kontinu-nodejs
   labels:
-    name: kontinu-app
+    name: kontinu-nodejs
 spec:
   #? deployment
   strategy:
@@ -13,26 +13,24 @@ spec:
       maxSurge: 1
       maxUnavailable: 1
 
-  replicas: 7
+  replicas: 3
   selector:
     matchLabels: #! && (AND)
-      app: kontinu-app
+      app: kontinu-nodejs
   template:
     #* pod template
     metadata:
       labels:
-        app: kontinu-app
+        app: kontinu-nodejs
     spec:
       containers:
-      - name: kontinu-app
-
-
+      - name: kontinu-nodejs
         env:
           - name: FOO
             value: "Hello From K8s ⌛"
-
-        image: kontinu/python-expert:v1.0
-
+          # - name: NEXT_URL
+          #   value: "http://kontinu-go/api"
+        image: kontinu/nodejs-expert:v1.0
         livenessProbe:
           httpGet:
             path: /health
@@ -52,10 +50,25 @@ spec:
             cpu: "500m"
           requests:
             memory: "50Mi"
-            cpu: "100m"
+            cpu: "10m"
         ports:
         - name: http
           containerPort: 8080
-
 ...
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  kontinu-nodejs
+  annotations:
+    description: "nodejs"
 
+spec:
+  selector:
+    app: kontinu-nodejs
+  type:  LoadBalancer
+  ports:
+  - name:  http
+    port:  80
+    targetPort:  http
+...

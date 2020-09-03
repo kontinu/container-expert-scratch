@@ -1,0 +1,12 @@
+apiVersion: v2
+appVersion: 1.16.0
+
+
+# dependencies:
+# - name: redis
+#   repository: https://charts.bitnami.com/bitnami
+#   version: ~10.7.16
+description: A Helm chart for Kubernetes
+name: kontinu-chart
+type: application
+version: 0.1.0
