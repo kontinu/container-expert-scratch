@@ -4,6 +4,7 @@
 - [Detalles](#detalles)
 - [Swarm](#swarm)
 - [VS Code](#vs-code)
+- [ECS](#ecs)
 
 <!-- /TOC -->
 
@@ -55,3 +56,33 @@ mi VS Code tiene los siguientes add-onds (plugins):
 - editorconfig
 - [THEME]: Andromeda Italic Border
 - [File Icons Themes]: VSCode Icons
+
+
+# ECS
+
+```bash
+ecs-cli configure --cluster kontinu-ecs --default-launch-type EC2 --config-name kontinu-ecs --region us-east-2
+
+ecs-cli configure profile --access-key $aws_access_key_id --secret-key $aws_secret_access_key --profile-name kontinu-ecs-profile
+
+
+ecs-cli up --keypair gitlab-devops-bootcamp --capability-iam --size 1 --instance-type t2.small --cluster-config kontinu-ecs --ecs-profile kontinu-ecs-profile
+
+
+ecs-cli compose up --create-log-groups --cluster-config kontinu-ecs --ecs-profile kontinu-ecs-profile
+
+
+ecs-cli compose down --cluster-config kontinu-ecs --ecs-profile kontinu-ecs-profile
+
+
+
+ecs-cli compose service up --cluster-config kontinu-ecs --ecs-profile kontinu-ecs-profile
+
+
+ecs-cli compose service rm --cluster-config kontinu-ecs --ecs-profile kontinu-ecs-profile
+
+ecs-cli down --force --cluster-config kontinu-ecs --ecs-profile kontinu-ecs-profile
+
+
+
+```
