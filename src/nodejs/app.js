@@ -12,7 +12,7 @@ const HOST = '0.0.0.0';
 const app = express();
 
 // Use environment variables
-//require('./extras/load_env')(app);
+require('./extras/load_env')(app);
 
 // read config from json
 //require('./extras/config_file')(app);

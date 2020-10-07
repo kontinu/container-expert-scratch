@@ -1,0 +1,21 @@
+version: "3"
+
+volumes:
+  named-vol:
+
+services:
+  mybash:
+    image: miapp:v1.2
+    environment:
+      - common=always the same
+      - foo=bar
+    env_file:
+      - configs/${RUNTIME:-staging}.env
+    build:
+      context: .
+    volumes:
+      - named-vol:/volumes/
+    ports:
+      - ${HTTP_PORT:-8080}:8080
+
+

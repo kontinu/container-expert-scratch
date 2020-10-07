@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+
+  menu:
+    image: kontinu/nginx-menu:v1.0
+    ports:
+    - 9090:80
+
+  front:
+    image: kontinu/python-expert:v1.0
+    #init: true
+    environment:
+      NEXT_URL: "http://middle:8080/api"
+    ports:
+    - 8080:8080
+
+  middle:
+    image: kontinu/nodejs-expert:v1.0
+    #init: true
+    environment:
+      NEXT_URL: "http://back:8080/api"
+    ports:
+    - 8082:8080
+
+  back:
+    image: kontinu/go-expert:v1.0
+    #init: true
+    restart: on-failure
+    ports:
+    - 8084:8080
+
+  redis:
+    image: "redis:alpine"
+    deploy:
+      replicas: 1
+    ports:
+    - 6379:6379

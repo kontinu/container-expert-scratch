@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  my-app
+  labels:
+    name:  my-app
+spec:
+  replicas: 2
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name:  my-app
+  template:
+    metadata:
+      labels:
+        name:  my-app
+    spec:
+      containers:
+      - image:  kontinu/python-expert:v1.0
+        imagePullPolicy: IfNotPresent
+        name:  my-app
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "55M"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 90
+          timeoutSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: http
+          initialDelaySeconds: 30
+          timeoutSeconds: 10
+        env:
+        - name:  ENVVARNAME
+          value:  ENVVARVALUE
+        ports:
+        - containerPort:  8080
+          name:  http
+        volumeMounts:
+        - mountPath: /data
+          name: data
+      volumes:
+        - name: data
+          emptyDir: {}
+
+

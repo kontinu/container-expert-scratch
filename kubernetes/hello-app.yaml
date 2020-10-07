@@ -1,0 +1,44 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      run: load-balancer-example
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        run: load-balancer-example
+    spec:
+      containers:
+      - image: gcr.io/google-samples/node-hello:1.0
+        imagePullPolicy: IfNotPresent
+        name: hello-world
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources: {}
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: example-service-2
+  namespace: default
+spec:
+  ports:
+  - nodePort: 31780
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    run: load-balancer-example
+  type: NodePort
