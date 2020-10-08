@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /back
+        pathType: Prefix
+        backend:
+          service:
+            name: back
+            port:
+              number: 80
+      - path: /front
+        pathType: Prefix
+        backend:
+          service:
+            name: front
+            port:
+              #number: 80
+              name: web
+      - path: /middle
+        pathType: Prefix
+        backend:
+          service:
+            name: middle
+            port:
+              number: 80
+      - path: /menu
+        pathType: Prefix
+        backend:
+          service:
+            name: menu
+            port:
+              number: 80

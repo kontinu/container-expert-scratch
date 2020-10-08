@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: back
 spec:
-  replicas: 2
+  #replicas: 2
   selector:
     matchLabels:
       name: back
@@ -20,6 +20,11 @@ spec:
           containerPort: 8080
           protocol: TCP
         resources: {}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
 ---
 kind: Service
 apiVersion: v1

@@ -6,6 +6,7 @@ metadata:
     role: myrole
     team: sre
     run: load-balancer-example
+  namespace: wize-1
 # specification
 spec:
   containers:

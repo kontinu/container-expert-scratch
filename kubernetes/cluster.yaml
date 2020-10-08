@@ -9,3 +9,6 @@ nodeGroups:
   - name: nodegroup-1
     instanceType: t2.small
     desiredCapacity: 1
+
+# eksctl create cluster  -f kubernetes/cluster.yaml
+# eksctl utils write-kubeconfig --cluster=basic-cluster --kubeconfig=/tmp/config

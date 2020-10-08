@@ -2,8 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: front
+  namespace: default
+  labels:
+    app: front
 spec:
-  replicas: 5
+  replicas: 2
   selector:
     matchLabels:
       name: front
@@ -19,10 +22,24 @@ spec:
         - name: http
           containerPort: 8080
           protocol: TCP
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 1
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 1
+
+
         env:
         - name: NEXT_URL
           value: http://middle/api
         resources: {}
+
 ---
 kind: Service
 apiVersion: v1
@@ -35,4 +52,5 @@ spec:
   ports:
   - name:  web
     port:  80
-    targetPort:  8080
+    targetPort:  http
+

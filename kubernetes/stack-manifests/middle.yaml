@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: middle
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       name: middle
@@ -23,7 +23,13 @@ spec:
         - name: NEXT_URL
           value: http://back/api
         resources: {}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
 ---
+# RR
 kind: Service
 apiVersion: v1
 metadata:
