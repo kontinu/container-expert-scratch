@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: minimal-ingress
@@ -6,34 +6,28 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - http:
+  - host: "app.kontinu.local"
+    http:
       paths:
       - path: /back
         pathType: Prefix
         backend:
-          service:
-            name: back
-            port:
-              number: 80
+          serviceName: back
+          servicePort: 80
       - path: /front
         pathType: Prefix
         backend:
-          service:
-            name: front
-            port:
-              #number: 80
-              name: web
+          serviceName: front
+          servicePort: 80
+
       - path: /middle
         pathType: Prefix
         backend:
-          service:
-            name: middle
-            port:
-              number: 80
+          serviceName: middle
+          servicePort: 80
+
       - path: /menu
         pathType: Prefix
         backend:
-          service:
-            name: menu
-            port:
-              number: 80
+          serviceName: menu
+          servicePort: 80

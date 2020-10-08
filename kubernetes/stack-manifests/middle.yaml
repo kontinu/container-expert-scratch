@@ -37,7 +37,7 @@ metadata:
 spec:
   selector:
     name: middle
-  type: ClusterIP
+  type: NodePort
   ports:
   - name:  web
     port:  80

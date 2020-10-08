@@ -40,7 +40,7 @@ spec:
   type: NodePort
   ports:
   - name:  http
-    nodePort: 31790
+    #nodePort: 31790
     port:  80
     targetPort:  80
 

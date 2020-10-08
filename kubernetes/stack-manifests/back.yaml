@@ -33,7 +33,7 @@ metadata:
 spec:
   selector:
     name: back
-  type: ClusterIP
+  type: NodePort
   ports:
   - name:  web
     port:  80
