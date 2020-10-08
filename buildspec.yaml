@@ -9,7 +9,7 @@ phases:
       - AWS_ACCOUNT_ID=109366565312
       #- REPOSITORY_URI=109366565312.dkr.ecr.us-east-2.amazonaws.com/kontinu
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_REPO_NAME=python-expert
+      - IMAGE_REPO_NAME=kontinu/python-expert
       - IMAGE_TAG=${COMMIT_HASH:=latest}
   build:
     commands:
