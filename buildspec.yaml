@@ -6,7 +6,7 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-      - AWS_ACCOUNT_ID=109366565312
+      - AWS_ACCOUNT_ID=349964581020
       #- REPOSITORY_URI=109366565312.dkr.ecr.us-east-2.amazonaws.com/kontinu
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_REPO_NAME=kontinu/python-expert
