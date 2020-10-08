@@ -8,8 +8,6 @@ phases:
       - echo Logging in to Amazon ECR...
       - aws --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
-      # ! Change Here with your account ID
-      - AWS_ACCOUNT_ID=109366565312
       # ! change with your ECR repo
       - IMAGE_REPO_NAME=kontinu/python-expert
 
@@ -19,6 +17,7 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
+      #? we are building just the python project
       - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG src/python
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
   post_build:
