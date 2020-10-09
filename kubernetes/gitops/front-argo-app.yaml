@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+  name: frontend
+  namespace: argocd
+spec:
+  destination:
+    namespace: default
+    server: https://28ED9B597C9210D5D57ED7F3C8095C3F.gr7.us-east-2.eks.amazonaws.com
+  project: default
+  source:
+    path: kubernetes/gitops/front-app
+    repoURL: https://github.com/kontinu/container-expert-scratch.git
+    targetRevision: HEAD
+  # syncPolicy:
+  #   automated:
+  #     prune: true
+  #     selfHeal: true
+  #   syncOptions:
+  #   - Validate=false
