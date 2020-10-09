@@ -18,7 +18,9 @@ spec:
       containers:
       - name: front
         image: 109366565312.dkr.ecr.us-east-2.amazonaws.com/kontinu/python-expert:897f9d4
-
+        envFrom:
+        - configMapRef:
+            name: frontend-cfg
         ports:
         - name: http
           containerPort: 8080

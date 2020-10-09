@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-cfg
+  labels:
+    name: front
+data:
+  FOO: "hello from configmap"
+  Jose: "Memo"
