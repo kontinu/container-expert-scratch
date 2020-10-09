@@ -15,6 +15,7 @@ spec:
       labels:
         name: front
     spec:
+
       containers:
       - name: front
         image: 109366565312.dkr.ecr.us-east-2.amazonaws.com/kontinu/python-expert:c511a10

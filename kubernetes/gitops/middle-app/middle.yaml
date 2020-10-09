@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: middle
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: middle
+  template:
+    metadata:
+      labels:
+        name: middle
+    spec:
+      containers:
+      - name: middle
+        image: kontinu/nodejs-expert:v1.0
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        env:
+        - name: NEXT_URL
+          value: http://back/api
+        resources: {}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+---
+# RR
+kind: Service
+apiVersion: v1
+metadata:
+  name:  middle
+spec:
+  selector:
+    name: middle
+  type: NodePort
+  ports:
+  - name:  web
+    port:  80
+    targetPort:  8080

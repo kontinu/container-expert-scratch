@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back
+spec:
+  #replicas: 2
+  selector:
+    matchLabels:
+      name: back
+  template:
+    metadata:
+      labels:
+        name: back
+    spec:
+      containers:
+      - name: back
+        image: kontinu/go-expert:v1.0
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources: {}
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  back
+spec:
+  selector:
+    name: back
+  type: NodePort
+  ports:
+  - name:  web
+    port:  80
+    targetPort:  8080
