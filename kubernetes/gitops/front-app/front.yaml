@@ -14,10 +14,9 @@ spec:
       labels:
         name: front
     spec:
-
       containers:
       - name: front
-        image: 109366565312.dkr.ecr.us-east-2.amazonaws.com/kontinu/python-expert:897f9d4
+        image: kontinu/python-expert:v1.0
         envFrom:
         - configMapRef:
             name: frontend-cfg
