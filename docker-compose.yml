@@ -1,26 +1,26 @@
 version: "3.0"
 
-# named volumes
-
 services:
   anyApp:
     build:
       context: src/${PROJECT_LANG:-python}
-
-    image: ${DOCKER_REPO:-mcano}/${PROJECT_LANG:-python}-expert:v1.0
+    image: ${DOCKER_REPO:-mcano}/${PROJECT_LANG:-python}-expert:v${VERSION:-1.0}
     environment:
       - FOO=bar
       - VAR=var
       - REDIS_HOST=db
     ports:
       - 8080:8080
-
+    # logging:
+    #   driver: awslogs
+    #   options:
+    #     awslogs-group: ec2-tutorial
+    #     awslogs-region: us-west-2
+    #     awslogs-stream-prefix: web
 
 # # FQDN == fully qualified domain name
-  # db:
-  #   image: redis:alpine
-  #   restart: on-failure
-  #   volumes:
-  #     - redis-vol:/data
-  #     - shared:/home/shared
+  db:
+    image: redis:alpine
+    restart: on-failure
+
 

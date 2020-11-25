@@ -1,4 +1,4 @@
-#? compilacion/build
+#? compilacion/build SDK
 FROM golang:1.14.3 AS builder
 
 WORKDIR /compose/main

@@ -20,7 +20,7 @@ require('./extras/load_env')(app);
 require("./extras/health")(app)
 //? MID
 
-var MSG=process.env.MSG || " < node: 📦 Container >";
+var MSG=process.env.MSG || "< node: 📦 Container >";
 
 const hostname=os.hostname()
 

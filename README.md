@@ -61,6 +61,7 @@ mi VS Code tiene los siguientes add-onds (plugins):
 # ECS
 
 ```bash
+
 ecs-cli configure --cluster kontinu-ecs --default-launch-type EC2 --config-name kontinu-ecs --region us-east-2
 
 ecs-cli configure profile --access-key $aws_access_key_id --secret-key $aws_secret_access_key --profile-name kontinu-ecs-profile
@@ -75,14 +76,11 @@ ecs-cli compose up --create-log-groups --cluster-config kontinu-ecs --ecs-profil
 ecs-cli compose down --cluster-config kontinu-ecs --ecs-profile kontinu-ecs-profile
 
 
-
 ecs-cli compose service up --cluster-config kontinu-ecs --ecs-profile kontinu-ecs-profile
 
 
 ecs-cli compose service rm --cluster-config kontinu-ecs --ecs-profile kontinu-ecs-profile
 
 ecs-cli down --force --cluster-config kontinu-ecs --ecs-profile kontinu-ecs-profile
-
-
 
 ```
