@@ -1,18 +1,14 @@
-FROM alpine
+# * app (src) + Dockerfile => docker image build => docker image (exe)
 
+# * docker image (exe) => docker container run => docker container (instance)
 
-VOLUME [ "/volumes" ]
-# RUN, COPY, ADD , FROM
+FROM ubuntu:20.04
 
-WORKDIR /app
-# ADD vs COPY
-COPY . .
+COPY myapp.sh /home/
 
-COPY . /volumes/
+RUN chmod +x /home/myapp.sh && ls -l /home && \
+    apt-get update && \
+    apt-get install -y curl
 
-#* Comandos de Linux (alpine)
-RUN ls /app && chmod +x myapp.sh && apk add --update bash curl wget
-
-CMD [ "./myapp.sh" ]
-ENTRYPOINT [ "bash" ]
-
+CMD [ "/home/myapp.sh" ]
+#ENTRYPOINT [ "executable" ]

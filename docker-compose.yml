@@ -15,12 +15,6 @@ services:
     ports:
       - 8080:8080
 
-    logging:
-      driver: awslogs
-      options:
-        awslogs-group: ec2-tutorial
-        awslogs-region: us-west-2
-        awslogs-stream-prefix: web
 
 # # FQDN == fully qualified domain name
   # db:

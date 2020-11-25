@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 #? BACK
 
-kontinu_msg=os.getenv("MSG"," 🐳 Hello")
+kontinu_msg=os.getenv("MSG","< python: 🐳 Hello >")
 
 # Use environment variables
 #import extras.load_env

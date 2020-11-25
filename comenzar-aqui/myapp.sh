@@ -16,13 +16,9 @@
 count=0
 while true;do
   echo "[INFO] transaction #${count}" >> /tmp/transaction.log
-  echo "[${count}] Hola Container bootcamp experts! 🐳 🤓 -> ${env_var}"
+  echo "[${count} - $(date)] Hola Container bootcamp experts! 🐳 🤓 -> ${env_var}"
   count=$(( count + 1))
   sleep 1
 done
 
-# Java8 (jre)
-# Tomcat
-# download war => webapps/
-#? config ?
-# docker run
+
