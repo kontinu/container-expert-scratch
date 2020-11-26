@@ -11,6 +11,11 @@ services:
       - FOO=bar
       - VAR=var
       - REDIS_HOST=db
+    volumes:
+    # bind volume
+      - ./src/python/:/code
+    working_dir: /code
+    command: ["sh", "-c", "pip install -r requirements.txt && python app.py"]
     ports:
       - 8080:8080
 
