@@ -1,7 +1,6 @@
 version: "3.8"
 
 
-
 services:
   anyApp:
     build:
@@ -9,6 +8,11 @@ services:
     image: ${DOCKER_REPO:-mcano}/${PROJECT_LANG:-python}-expert:v${VERSION:-1.0}
     deploy:
       mode: replicated
+      replicas: 10
+      update_config:
+        parallelism: 5
+        delay: 10s
+        order: start-first
     environment:
       - FOO=bar
       - VAR=var

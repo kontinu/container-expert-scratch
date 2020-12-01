@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # labels:
+  #   run: nginx
+  name: nginx
+  namespace: default
+# * specification of the deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      # ? va a controlar todos aquellos pods que cumplan con las siguientes labels.
+      run: nginx
+  # * POD template
+  template:
+    metadata:
+      labels:
+        run: nginx
+    spec:
+      containers:
+      - image: kontinu/nginx-expert:v1.0
+        imagePullPolicy: Always
+        name: nginx
+        resources: {}
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+
