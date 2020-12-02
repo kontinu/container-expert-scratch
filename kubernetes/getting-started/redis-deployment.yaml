@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels: # and
+      app: redis
+  template:
+    # ---- def POD
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: db
+        image: redis

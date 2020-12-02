@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels: # and
+      app: web-server
+  template:
+    # ---- def POD
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      containers:
+      - name: web
+        image: nginx:alpine #docker hub

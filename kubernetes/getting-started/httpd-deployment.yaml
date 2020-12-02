@@ -1,11 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:  python-app
+  name:  apache
   labels:
-    name:  python-app
+    name:  web-server
 spec:
-  replicas: 2
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -13,37 +12,40 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      name:  python-app
+      name:  my-name
   template:
     metadata:
       labels:
-        name:  python-app
+        name:  my-name
     spec:
       containers:
-      - image:  kontinu/python-app:v1.0
-        imagePullPolicy: IfNotPresent
-        name:  python-app
+      - image:  httpd
+        name:  apache
         resources:
+          # idle
           requests:
             cpu: "20m"
             memory: "55M"
+          limits:
+            cpu: "500m"
+            memory: "500M"
         livenessProbe:
           httpGet:
-            path: /health
+            path: /
             port: http
           initialDelaySeconds: 90
           timeoutSeconds: 10
         readinessProbe:
           httpGet:
-            path: /health
+            path: /
             port: http
           initialDelaySeconds: 30
           timeoutSeconds: 10
         env:
-        - name:  FOO
-          value:  "Hello from kubernetes"
+        - name:  ENVVARNAME
+          value:  ENVVARVALUE
         ports:
-        - containerPort:  8080
+        - containerPort:  80
           name:  http
         volumeMounts:
         - mountPath: /data
@@ -52,4 +54,17 @@ spec:
         - name: data
           emptyDir: {}
 
-
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name:  apache
+spec:
+  selector:
+    name:  my-name
+  type:   NodePort
+  ports:
+  - name:  web
+    port:  80
+    targetPort:  http
+    #nodePort: 32490
