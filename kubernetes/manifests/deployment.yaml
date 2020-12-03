@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: Deployment #StatefulSet
 metadata:
   name:  python-app
   labels:
@@ -23,25 +23,10 @@ spec:
       - image:  kontinu/python-app:v1.0
         imagePullPolicy: IfNotPresent
         name:  python-app
-        resources:
-          requests:
-            cpu: "20m"
-            memory: "55M"
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: http
-          initialDelaySeconds: 90
-          timeoutSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: http
-          initialDelaySeconds: 30
-          timeoutSeconds: 10
+        resources: {}
         env:
         - name:  FOO
-          value:  "Hello from kubernetes"
+          value:  "Hello from Google Cloud Platform"
         ports:
         - containerPort:  8080
           name:  http

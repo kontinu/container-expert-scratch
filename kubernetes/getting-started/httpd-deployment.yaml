@@ -21,26 +21,6 @@ spec:
       containers:
       - image:  httpd
         name:  apache
-        resources:
-          # idle
-          requests:
-            cpu: "20m"
-            memory: "55M"
-          limits:
-            cpu: "500m"
-            memory: "500M"
-        livenessProbe:
-          httpGet:
-            path: /
-            port: http
-          initialDelaySeconds: 90
-          timeoutSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /
-            port: http
-          initialDelaySeconds: 30
-          timeoutSeconds: 10
         env:
         - name:  ENVVARNAME
           value:  ENVVARVALUE
@@ -50,6 +30,7 @@ spec:
         volumeMounts:
         - mountPath: /data
           name: data
+        resources: {}
       volumes:
         - name: data
           emptyDir: {}
@@ -67,4 +48,4 @@ spec:
   - name:  web
     port:  80
     targetPort:  http
-    #nodePort: 32490
+
