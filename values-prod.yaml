@@ -1,0 +1,2 @@
+FOO: "Hello GKE PRODUCTION"
+replicaCount: 5
