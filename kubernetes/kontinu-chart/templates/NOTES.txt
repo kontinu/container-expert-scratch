@@ -1,0 +1,7 @@
+Hello from Helm!
+
+
+App installed {{.Chart.Name}}
+
+
+Happy helming !!!

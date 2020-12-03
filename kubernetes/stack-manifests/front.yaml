@@ -16,8 +16,7 @@ spec:
     spec:
       containers:
       - name: front
-        image: 109366565312.dkr.ecr.us-east-2.amazonaws.com/kontinu/python-expert:c511a10
-
+        image: kontinu/python-expert:v1.0
         ports:
         - name: http
           containerPort: 8080
@@ -33,11 +32,11 @@ spec:
             path: /health
             port: 8080
           initialDelaySeconds: 1
-
-
         env:
         - name: NEXT_URL
           value: http://middle/api
+        - name: FOO
+          value: Hello from K8s
         resources: {}
 
 ---
